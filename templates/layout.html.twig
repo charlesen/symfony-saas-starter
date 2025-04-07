@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	{% block header %}
+		{% include "_header.html.twig" %}
+	{% endblock %}
+
+	<section class="bg-white dark:bg-gray-900">
+		<div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-12">
+			{% block content %}{% endblock %}
+		</div>
+	</section>
+{% endblock %}
