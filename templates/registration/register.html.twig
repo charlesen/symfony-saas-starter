@@ -1,0 +1,63 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ 'Register'|trans }}
+{% endblock %}
+
+{% block content %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="text-sm text-red-600 dark:text-red-400 mb-4" role="alert">
+			{{ flash_error }}
+		</div>
+	{% endfor %}
+
+	{% embed 'components/auth-card.html.twig' %}
+		{% block auth_title %}
+			{{ 'Register'|trans }}
+		{% endblock %}
+
+		{% block auth_flashes %}
+			{{ form_errors(registrationForm) }}
+		{% endblock %}
+
+		{% block auth_content %}
+			{{ form_start(registrationForm, {'attr': {'class': 'space-y-4 md:space-y-6'}}) }}
+
+			<div>
+				{{ form_label(registrationForm.email, 'Email address'|trans, { 'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'} }) }}
+				{{ form_widget(registrationForm.email, { 'attr': {
+                    'class': 'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
+                }}) }}
+				{{ form_errors(registrationForm.email) }}
+			</div>
+
+			<div>
+				{{ form_label(registrationForm.plainPassword, 'Password'|trans, { 'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'} }) }}
+				{{ form_widget(registrationForm.plainPassword, { 'attr': {
+                    'autocomplete': 'new-password',
+                    'class': 'bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white'
+                }}) }}
+				{{ form_errors(registrationForm.plainPassword) }}
+			</div>
+
+			<div>
+				{{ form_widget(registrationForm.agreeTerms) }}
+				{{ form_label(registrationForm.agreeTerms, 'I agree to the terms'|trans, { 'label_attr': {'class': 'ml-2 text-sm text-gray-500 dark:text-gray-300'} }) }}
+				{{ form_errors(registrationForm.agreeTerms) }}
+			</div>
+
+			<button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+				{{ 'Register'|trans }}
+			</button>
+
+			<p class="text-sm font-light text-gray-500 dark:text-gray-400">
+				{{ 'Already have an account?'|trans }}
+				<a href="{{ path('login') }}" class="font-medium text-primary-600 hover:underline dark:text-primary-500">
+					{{ 'Login'|trans }}
+				</a>
+			</p>
+
+			{{ form_end(registrationForm) }}
+		{% endblock %}
+	{% endembed %}
+{% endblock %}
