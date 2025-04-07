@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}
+	{{ 'Dashboard' | trans }}
+{% endblock %}
+
+{% block content %}
+	<div class="max-w-4xl mx-auto mt-10">
+		<h1 class="text-2xl font-bold mb-4">{{ 'Welcome to your dashboard' | trans }}</h1>
+		<div class="bg-white dark:bg-gray-800 rounded shadow p-6 space-y-4">
+			<p class="text-gray-700 dark:text-gray-300">
+				{{ 'You are logged in as' | trans }}
+				<strong>{{ app.user.email }}</strong>
+			</p>
+
+			<div class="mt-6">
+				<a href="{{ path('logout') }}" class="text-red-600 hover:underline">
+					{{ 'Logout' | trans }}
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}
