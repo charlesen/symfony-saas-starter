@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
-#[Route('/{_locale}')]
+#[Route('/{_locale}', requirements: ['_locale' => 'en|es|fr'])]
 class RegistrationController extends AbstractController
 {
     public function __construct(private EmailVerifier $emailVerifier) {}
@@ -27,7 +27,7 @@ class RegistrationController extends AbstractController
     {
         // If logged in, redirect to home page
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('dashboard_index');
         }
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -56,7 +56,7 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('dashboard_index');
         }
 
         return $this->render('registration/register.html.twig', [

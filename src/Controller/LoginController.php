@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[Route('/{_locale}')]
+#[Route('/{_locale}', requirements: ['_locale' => 'en|es|fr'])]
 class LoginController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]
@@ -15,7 +15,7 @@ class LoginController extends AbstractController
     {
         // If logged in, redirect to home page
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('home');
+            return $this->redirectToRoute('dashboard_index');
         }
 
         // get the login error if there is one

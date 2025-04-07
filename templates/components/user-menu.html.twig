@@ -1,0 +1,32 @@
+<div class="ms-3 relative" data-controller="user-menu">
+	<div>
+		<button type="button" data-action="click->user-menu#toggle" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+			<span class="sr-only">{{ 'Open user menu' | trans }}</span>
+			<img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+		</button>
+	</div>
+	<div data-user-menu-target="menu" class="absolute right-0 z-50 mt-5 w-48 hidden bg-white rounded-sm shadow dark:bg-gray-700">
+		<div class="px-4 py-3" role="none">
+			<p class="text-sm text-gray-900 dark:text-white" role="none">
+				{{ app.user.fullName ?? app.user.userIdentifier }}
+			</p>
+			<p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+				{{ app.user.email }}
+			</p>
+		</div>
+		<ul class="py-1" role="none">
+			<li>
+				<a href="{{ path('dashboard_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">{{ 'Dashboard' | trans }}</a>
+			</li>
+			<li>
+				<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">{{ 'Settings' | trans }}</a>
+			</li>
+			<li>
+				<a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">{{ 'Earnings' | trans }}</a>
+			</li>
+			<li>
+				<a href="{{ path('logout') }}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-100 dark:text-red-400 dark:hover:bg-red-700 dark:hover:text-white" role="menuitem">{{ 'Logout' | trans }}</a>
+			</li>
+		</ul>
+	</div>
+</div>
