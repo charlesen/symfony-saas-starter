@@ -6,7 +6,19 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta property="og:locale" content="fr"/>
 		<meta property='og:url' content='https://www.postgenius.app'/>
-		<meta property="og:site_name" content="PostGeniusb"/>
+		<meta
+		property="og:site_name" content="PostGenius"/>
+
+		{# Favicon - version vectorielle #}
+		<link
+		rel="icon" type="image/svg+xml" href="{{ asset('build/images/favicon/favicon.svg') }}"/>
+
+		{# PNG version fallback #}
+		<link rel="icon" type="image/png" href="{{ asset('build/images/favicon/favicon-96x96.png') }}" sizes="96x96"/>
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('build/images/favicon/apple-touch-icon.png') }}"/>
+		<link rel="shortcut icon" href="{{ asset('build/images/favicon/favicon.ico') }}"/>
+		<link rel="manifest" href="{{ asset('build/images/favicon/site.webmanifest') }}"/>
+
 		<title>
 			{% block title %}
 				PostGenius
