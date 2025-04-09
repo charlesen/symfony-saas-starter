@@ -2,16 +2,13 @@
 	<div>
 		<button type="button" data-action="click->user-menu#toggle" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
 			<span class="sr-only">{{ 'Open user menu' | trans }}</span>
-			<img class="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo">
+			<img class="w-8 h-8 rounded-full" src="{{ asset('build/images/default-user.svg') }}" alt="user photo">
 		</button>
 	</div>
 	<div data-user-menu-target="menu" class="absolute right-0 z-50 mt-5 w-48 hidden bg-white rounded-sm shadow dark:bg-gray-700">
 		<div class="px-4 py-3" role="none">
-			<p class="text-sm text-gray-900 dark:text-white" role="none">
-				{{ app.user.fullName ?? app.user.userIdentifier }}
-			</p>
 			<p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-				{{ app.user.email }}
+				{{ app.user.fullName ?? app.user.userIdentifier }}
 			</p>
 		</div>
 		<ul class="py-1" role="none">
