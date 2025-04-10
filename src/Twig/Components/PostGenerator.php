@@ -2,6 +2,9 @@
 
 namespace App\Twig\Components;
 
+use App\Entity\PostHistory;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -45,7 +48,7 @@ final class PostGenerator
         'Deutsch',
     ];
 
-    public function __construct(private HttpClientInterface $client) {}
+
 
     #[LiveProp(writable: true)] public string $topic = '';
     #[LiveProp(writable: true)] public int $tone = 0;
@@ -57,6 +60,12 @@ final class PostGenerator
 
     public array $results = [];
     public ?string $error = null;
+
+    public function __construct(
+        private HttpClientInterface $client,
+        private EntityManagerInterface $em,
+        private Security $security,
+    ) {}
 
     #[LiveAction]
     public function generate(): void
@@ -82,6 +91,16 @@ final class PostGenerator
             $content = $data['choices'][0]['message']['content'] ?? '';
 
             $this->results = array_map('trim', explode('###', $content));
+
+            // Sauvegarde des posts générés
+            foreach ($this->results as $result) {
+                $history = new PostHistory();
+                $history->setContent($result);
+                $history->setOwner($this->security->getUser());
+                $this->em->persist($history);
+            }
+
+            $this->em->flush();
         } catch (\Throwable $e) {
             $this->error = $e->getMessage();
         }

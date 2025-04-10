@@ -1,8 +1,8 @@
 <header>
 	<nav class="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
 		<div class="flex flex-wrap items-center justify-between max-w-screen-xl mx-auto">
-			<a href="https://flowbite.com" class="flex items-center">
-				<img src="{{asset('build/images/logo.svg')}}" class="h-8 me-3" alt="Logo PostGenius" style="width:200px; height:50px"/>
+			<a href="{{ path('home') }}" class="flex items-center">
+				<img src="{{asset('build/images/logo.svg')}}" class="h-8" alt="Logo PostGenius" style="width:200px; height:50px"/>
 				<span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white hidden ">PostGenius</span>
 			</a>
 			{% block header_menu %}
