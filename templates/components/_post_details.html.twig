@@ -1,0 +1,9 @@
+<div class="relative p-4 bg-white dark:bg-gray-800 border rounded-lg shadow group">
+	<button data-controller="clipboard" data-clipboard-content="{{ post.content }}" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" title="Copy">
+		<svg class="w-5 h-5" fill="none" stroke="currentColor">
+			<use xlink:href="#icon-clipboard"/>
+		</svg>
+	</button>
+	<p class="text-sm whitespace-pre-line">{{ post.content }}</p>
+	<span class="text-xs text-gray-400">{{ post.createdAt|ago }}</span>
+</div>

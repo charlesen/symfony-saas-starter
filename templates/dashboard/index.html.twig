@@ -1,18 +1,9 @@
 {% extends 'layout_sidebar.html.twig' %}
 
 {% block title %}
-	{{ 'Dashboard' | trans }}
+	{{ 'Generate a new post' | trans }}
 {% endblock %}
 
 {% block content %}
-	<p class="text-gray-700 dark:text-gray-300">
-		{{ 'You are logged in as' | trans }}
-		<strong>{{ app.user.email }}</strong>
-	</p>
-
-	<div class="mt-6">
-		<a href="{{ path('logout') }}" class="text-red-600 hover:underline">
-			{{ 'Logout' | trans }}
-		</a>
-	</div>
+	{{ component('PostGenerator') }}
 {% endblock %}

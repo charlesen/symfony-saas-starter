@@ -75,16 +75,8 @@
 	{# RESULTATS #}
 	{% if this.results %}
 		<div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-			{% for item in this.results %}
-				<div class="relative p-4 bg-white dark:bg-gray-800 border rounded-lg shadow group">
-					<button data-controller="clipboard" data-clipboard-content="{{ item }}" class="absolute top-2 right-2 text-gray-400 hover:text-gray-600" title="Copy">
-						<svg class="w-5 h-5" fill="none" stroke="currentColor">
-							<use xlink:href="#icon-clipboard"/>
-						</svg>
-					</button>
-
-					<p class="text-sm whitespace-pre-line">{{ item }}</p>
-				</div>
+			{% for post in this.results %}
+				{% include "components/_post_details.html.twig" %}
 			{% endfor %}
 		</div>
 

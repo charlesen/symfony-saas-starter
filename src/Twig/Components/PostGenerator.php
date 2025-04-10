@@ -3,6 +3,7 @@
 namespace App\Twig\Components;
 
 use App\Entity\PostHistory;
+use App\Repository\PostHistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -65,7 +66,10 @@ final class PostGenerator
         private HttpClientInterface $client,
         private EntityManagerInterface $em,
         private Security $security,
-    ) {}
+        private PostHistoryRepository $postHistoryRepository
+    ) {
+        $this->results = $postHistoryRepository->findPaginatedByUser($this->security->getUser());
+    }
 
     #[LiveAction]
     public function generate(): void
@@ -90,14 +94,16 @@ final class PostGenerator
             $data = $response->toArray();
             $content = $data['choices'][0]['message']['content'] ?? '';
 
-            $this->results = array_map('trim', explode('###', $content));
+            $results = array_map('trim', explode('###', $content));
 
             // Sauvegarde des posts générés
-            foreach ($this->results as $result) {
+            foreach ($results as $result) {
                 $history = new PostHistory();
                 $history->setContent($result);
                 $history->setOwner($this->security->getUser());
                 $this->em->persist($history);
+
+                $this->results[] = $history;
             }
 
             $this->em->flush();
