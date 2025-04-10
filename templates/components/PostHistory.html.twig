@@ -1,16 +1,32 @@
 <div {{ attributes }} class="space-y-4">
 
-	{% for post in this.posts %}
-		<div class="p-4 bg-white dark:bg-gray-800 border rounded shadow">
-			<p class="text-sm whitespace-pre-line">{{ post.content }}</p>
-			<span class="text-xs text-gray-400">{{ post.createdAt|ago }}</span>
+	{% if this.posts is empty %}
+		<div class="text-center text-gray-400 text-sm">
+			{{ 'No post found'|trans }}
 		</div>
-	{% endfor %}
+	{% else %}
 
-	<div class="flex justify-center" data-controller="app" data-action="app#intersect">
-		<button {{ live_action('loadMore') }} data-intersection-target="loadMoreButton" class="mt-4 px-4 py-2 text-sm bg-gray-100 hover:bg-gray-200 rounded">
-			{{ 'See more'|trans }}
-		</button>
-	</div>
+		{% for post in this.posts %}
+			<div class="p-4 bg-white dark:bg-gray-800 border rounded shadow">
+				<p class="text-sm whitespace-pre-line">{{ post.content }}</p>
+				<span class="text-xs text-gray-400">{{ post.createdAt|ago }}</span>
+			</div>
+		{% endfor %}
 
+		{% if this.posts|length < this.totalPosts %}
+			<div class="flex justify-center" data-controller="intersection" data-action="intersection#intersect">
+				<button {{ live_action('loadMore') }} data-intersection-target="loadMoreButton" class="mt-4 px-4 py-2 dark:text-gray-700 text-sm bg-gray-100 hover:bg-gray-200 rounded flex items-center gap-2">
+					<svg data-loading="show" class="animate-spin h-4 w-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24">
+						<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+						<path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+					</svg>
+					<span data-loading="hide">{{ 'See more'|trans }}</span>
+				</button>
+			</div>
+		{% else %}
+			<div class="text-center text-gray-400 text-sm mt-4">
+				{{ 'No more results'|trans }}
+			</div>
+		{% endif %}
+	{% endif %}
 </div>

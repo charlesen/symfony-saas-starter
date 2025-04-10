@@ -15,12 +15,14 @@ final class PostHistory
     use DefaultActionTrait;
 
     #[LiveProp(writable: true)]
-    public int $limit = 6; // Nombre de posts chargés par "loadMore"
+    public int $limit = 6;
 
     #[LiveProp(writable: true)]
     public int $offset = 0;
 
     public array $posts = [];
+
+    public int $totalPosts = 0;
 
     public function __construct(
         private PostHistoryRepository $postHistoryRepository,
@@ -43,14 +45,17 @@ final class PostHistory
     {
         $user = $this->security->getUser();
 
-        $query = $this->postHistoryRepository->createQueryBuilder('p')
+        $qb = $this->postHistoryRepository->createQueryBuilder('p')
             ->andWhere('p.owner = :user')
             ->setParameter('user', $user)
-            ->orderBy('p.createdAt', 'DESC')
+            ->orderBy('p.createdAt', 'DESC');
+
+        $this->totalPosts = count($qb->getQuery()->getResult());
+
+        $this->posts = $qb
             ->setFirstResult(0)
             ->setMaxResults($this->offset + $this->limit)
-            ->getQuery();
-
-        $this->posts = $query->getResult();
+            ->getQuery()
+            ->getResult();
     }
 }
