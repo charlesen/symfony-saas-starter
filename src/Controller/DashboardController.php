@@ -20,6 +20,6 @@ final class DashboardController extends AbstractController
     #[Route('/generate', name: 'generate_post')]
     public function generatePost(): Response
     {
-        return $this->render('dashboard/index.html.twig');
+        return $this->render('dashboard/generate.html.twig');
     }
 }

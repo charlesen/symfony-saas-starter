@@ -1,0 +1,70 @@
+<div {{ attributes }} class="space-y-6">
+	<form wire:submit.prevent="generate" class="space-y-4">
+		<div>
+			<label for="topic" class="block mb-1 font-medium">{{ 'Topic' | trans }}</label>
+			<input type="text" id="topic" name="topic" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="Ex: AI in marketing" wire:model.live="topic">
+		</div>
+
+		<div>
+			<label for="tone" class="block mb-1 font-medium">{{ 'Tone' | trans }}</label>
+			<select id="tone" name="tone" class="w-full rounded-md border-gray-300 shadow-sm" wire:model.live="tone">
+				<option value="Professional">Professional</option>
+				<option value="Casual">Casual</option>
+				<option value="Inspirational">Inspirational</option>
+				<option value="Humorous">Humorous</option>
+				<option value="Educational">Educational</option>
+			</select>
+		</div>
+
+		<div>
+			<label for="audience" class="block mb-1 font-medium">{{ 'Audience' | trans }}</label>
+			<select id="audience" name="audience" class="w-full rounded-md border-gray-300 shadow-sm" wire:model.live="audience">
+				<option value="General">General</option>
+				<option value="Developers">Developers</option>
+				<option value="Entrepreneurs">Entrepreneurs</option>
+				<option value="Marketers">Marketers</option>
+				<option value="Job Seekers">Job Seekers</option>
+			</select>
+		</div>
+
+		<div>
+			<label for="prompt_style" class="block mb-1 font-medium">{{ 'Style' | trans }}</label>
+			<select id="prompt_style" name="prompt_style" class="w-full rounded-md border-gray-300 shadow-sm" wire:model.live="promptStyle">
+				<option value="inspiration">{{ 'Inspiration' | trans }}</option>
+				<option value="storytelling">{{ 'Storytelling' | trans }}</option>
+				<option value="cta">{{ 'Call to Action' | trans }}</option>
+				<option value="thread">{{ 'Thread' | trans }}</option>
+				<option value="stat_opinion">{{ 'Stat + Opinion' | trans }}</option>
+				<option value="service_announcement">{{ 'Service Announcement' | trans }}</option>
+			</select>
+		</div>
+
+		<div>
+			<label for="language" class="block mb-1 font-medium">{{ 'Language' | trans }}</label>
+			<select id="language" name="language" class="w-full rounded-md border-gray-300 shadow-sm" wire:model.live="language">
+				<option value="English">English</option>
+				<option value="Français">Français</option>
+				<option value="Español">Español</option>
+				<option value="Deutsch">Deutsch</option>
+			</select>
+		</div>
+
+		<div>
+			<label for="keywords" class="block mb-1 font-medium">{{ 'Keywords (optional)' | trans }}</label>
+			<input type="text" id="keywords" name="keywords" class="w-full rounded-md border-gray-300 shadow-sm" placeholder="e.g. automation, ChatGPT, future" wire:model.live="keywords">
+		</div>
+
+		<div>
+			<button type="submit" class="w-full bg-blue-600 text-white rounded-md px-4 py-2 hover:bg-blue-700">
+				{{ 'Generate Post' | trans }}
+			</button>
+		</div>
+	</form>
+
+	{% if result %}
+		<div class="mt-6">
+			<h2 class="text-lg font-semibold mb-2">{{ 'Generated Post' | trans }}</h2>
+			<textarea class="w-full border rounded-md p-3" rows="10" readonly>{{ result }}</textarea>
+		</div>
+	{% endif %}
+</div>
