@@ -5,6 +5,7 @@ namespace App\Twig\Components;
 use App\Entity\PostHistory;
 use App\Repository\PostHistoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
@@ -13,7 +14,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('PostGenerator')]
-final class PostGenerator
+final class PostGenerator extends AbstractController
 {
     use DefaultActionTrait;
 
@@ -67,13 +68,19 @@ final class PostGenerator
         private EntityManagerInterface $em,
         private Security $security,
         private PostHistoryRepository $postHistoryRepository
-    ) {
-        $this->results = $postHistoryRepository->findPaginatedByUser($this->security->getUser());
+    ) {}
+
+    public function mount(): void
+    {
+        $this->results = $this->postHistoryRepository->findPaginatedByUser($this->security->getUser());
     }
 
     #[LiveAction]
-    public function generate(): void
+    public function generate()
     {
+        if (!$this->security->getUser()) {
+            return $this->redirectToRoute('login');
+        }
         $prompt = $this->buildPrompt();
 
         try {
