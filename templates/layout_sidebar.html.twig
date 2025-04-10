@@ -57,7 +57,14 @@
 
 		<div class="p-4 sm:ml-64">
 			<div class="p-4 rounded-lg mt-14">
-				{% block content %}{% endblock %}
+				<div class="max-w-4xl mx-auto mt-10">
+					<h1 class="text-2xl font-bold mb-4 text-center">
+						{% block page_title %}
+							{{block('title')}}
+						{% endblock %}
+					</h1>
+					{% block content %}{% endblock %}
+				</div>
 			</div>
 		</div>
 	</div>
