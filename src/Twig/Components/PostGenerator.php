@@ -2,16 +2,18 @@
 
 namespace App\Twig\Components;
 
-use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
+use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\UX\LiveComponent\Attribute\LiveAction;
 
 #[AsLiveComponent(name: 'PostGenerator')]
 final class PostGenerator
 {
     use DefaultActionTrait;
+
+    public function __construct(private HttpClientInterface $client) {}
 
     #[LiveProp(writable: true)]
     public string $topic = '';
@@ -28,32 +30,24 @@ final class PostGenerator
     #[LiveProp(writable: true)]
     public string $language = 'English';
 
-    public ?string $result = null;
+    #[LiveProp(writable: true)]
+    public string $keywords = '';
+
+    #[LiveProp(writable: true)]
     public ?string $error = null;
+
+    #[LiveProp(writable: true)]
+    public array $results = []; // tableau de résultats
 
     #[LiveAction]
     public function generate(): void
     {
-        $client = HttpClient::create();
-
-        $template = $this->getPromptTemplate($this->promptStyle);
-
-        if (!$template) {
-            $this->error = 'Invalid prompt style';
-            return;
-        }
-
-        $prompt = strtr($template, [
-            '{topic}' => $this->topic,
-            '{tone}' => $this->tone,
-            '{audience}' => $this->audience,
-            '{language}' => $this->language,
-        ]);
+        $prompt = $this->buildPrompt();
 
         try {
-            $response = $client->request('POST', $_ENV['OPENAI_API_URL'] ?? 'https://api.openai.com/v1/chat/completions', [
+            $response = $this->client->request('POST', $_ENV['OPENAI_API_URL'] . '/chat/completions', [
                 'headers' => [
-                    'Authorization' => 'Bearer ' . ($_ENV['OPENAI_API_KEY'] ?? ''),
+                    'Authorization' => 'Bearer ' . $_ENV['OPENAI_API_KEY'],
                     'Content-Type' => 'application/json',
                 ],
                 'json' => [
@@ -66,11 +60,42 @@ final class PostGenerator
             ]);
 
             $content = $response->toArray();
-            $this->result = $content['choices'][0]['message']['content'] ?? 'No content returned';
+            $text = $content['choices'][0]['message']['content'] ?? '';
+
+            // découpe les résultats
+            $this->results = array_map('trim', explode('###', $text));
         } catch (\Exception $e) {
             $this->error = 'Error: ' . $e->getMessage();
         }
     }
+
+    private function buildPrompt(): string
+    {
+        $basePrompt = $this->getPromptTemplate($this->promptStyle);
+
+        if (!$basePrompt) {
+            throw new \InvalidArgumentException('Invalid prompt style');
+        }
+
+        $prompt = strtr($basePrompt, [
+            '{topic}' => $this->topic,
+            '{tone}' => $this->tone,
+            '{audience}' => $this->audience,
+            '{language}' => $this->language,
+        ]);
+
+        if ($this->keywords) {
+            $prompt .= "\n\nKeywords to include: {$this->keywords}";
+        }
+
+        $prompt .= "\n\nGenerate 3 different LinkedIn posts in the following language: {$this->language}.";
+        $prompt .= " Separate each post with '###'.";
+        $prompt .= " Only answer in {$this->language}, even if the topic is in another language.";
+
+        return $prompt;
+    }
+
+
 
     private function getPromptTemplate(string $style): ?string
     {
