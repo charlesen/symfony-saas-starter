@@ -23,6 +23,9 @@ class PostHistory
     #[ORM\ManyToOne(inversedBy: 'postHistories')]
     private ?User $owner = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isFavorite = false;
+
 
     public function getId(): ?int
     {
@@ -52,6 +55,24 @@ class PostHistory
     {
         $this->owner = $owner;
 
+        return $this;
+    }
+
+    public function isFavorite(): ?bool
+    {
+        return $this->isFavorite;
+    }
+
+    public function setIsFavorite(?bool $isFavorite): static
+    {
+        $this->isFavorite = $isFavorite;
+
+        return $this;
+    }
+
+    public function toggleFavorite(): static
+    {
+        $this->isFavorite = !$this->isFavorite;
         return $this;
     }
 }

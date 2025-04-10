@@ -6,4 +6,15 @@
 	</button>
 	<p class="text-sm whitespace-pre-line">{{ post.content }}</p>
 	<span class="text-xs text-gray-400">{{ post.createdAt|ago }}</span>
+
+	<div class="m-2">
+		<button {{ live_action('toggleFavorite', { id: post.id } ) }} class="absolute top-2 right-2 text-gray-400 hover:text-yellow-400" title="Toggle Favorite">
+			{% if post.isFavorite %}
+				⭐
+			{% else %}
+				☆
+			{% endif %}
+		</button>
+	</div>
+
 </div>

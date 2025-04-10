@@ -3,9 +3,11 @@
 namespace App\Twig\Components;
 
 use App\Repository\PostHistoryRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -26,6 +28,7 @@ final class PostHistory
 
     public function __construct(
         private PostHistoryRepository $postHistoryRepository,
+        private EntityManagerInterface $em,
         private Security $security,
     ) {}
 
@@ -38,6 +41,21 @@ final class PostHistory
     public function loadMore(): void
     {
         $this->offset += $this->limit;
+        $this->loadPosts();
+    }
+
+    #[LiveAction]
+    public function toggleFavorite(#[LiveArg] int $id): void
+    {
+        $post = $this->postHistoryRepository->find($id);
+
+        if (!$post || $post->getOwner() !== $this->security->getUser()) {
+            return;
+        }
+
+        $post->toggleFavorite();
+        $this->em->flush();
+
         $this->loadPosts();
     }
 
