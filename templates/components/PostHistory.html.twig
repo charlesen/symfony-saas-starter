@@ -6,9 +6,8 @@
 		</div>
 	{% else %}
 
-		{% for post in this.posts %}
-			{% include "components/_post_details.html.twig" %}
-		{% endfor %}
+
+		{% include "components/_post_list.html.twig" with {'posts': this.posts} %}
 
 		{% if this.posts|length < this.totalPosts %}
 			<div class="flex justify-center" data-controller="intersection" data-action="intersection#intersect">

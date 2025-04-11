@@ -1,0 +1,45 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+	{% for post in posts %}
+		<div class="bg-white dark:bg-gray-800 border shadow-sm px-4 py-3 rounded-lg relative group transition-opacity duration-300 animate-fade-in">
+			<div class="flex items-center">
+				<img class="h-10 w-10 rounded-full object-cover" src="{{ asset('build/images/default-user.svg') }}" alt="Avatar">
+
+				<div class="ml-2">
+					<div class="text-sm">
+						<span class="font-semibold">{{ app.user.fullname|default('PostGenius User') }}</span>
+						<span class="text-gray-500">
+							• 1st</span>
+					</div>
+					<div class="text-gray-500 text-xs">Membre PostGenius</div>
+					<div class="text-gray-500 text-xs flex">
+						<span>{{ post.createdAt|ago }}</span>
+					</div>
+				</div>
+
+				<button {{ live_action('toggleFavorite', { id: post.id } ) }} class="ml-auto text-gray-400 hover:text-yellow-400">
+					{% if post.isFavorite %}
+						⭐
+					{% else %}
+						☆
+					{% endif %}
+				</button>
+			</div>
+
+			<p class="text-gray-800 dark:text-gray-300 text-sm mt-2 leading-normal">{{ post.content }}</p>
+
+			<div class="flex justify-between items-center text-gray-500 text-xs mt-3">
+				<span>{{ 'PostGenius' }}</span>
+
+				<button data-controller="copy" data-copy-content="{{ post.content }}" data-action="click->copy#copy" class="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300" title="Copier">
+					<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 2H15A2 2 0 0117 4V6A2 2 0 0115 8H9A2 2 0 017 6V4A2 2 0 019 2ZM7 6V20A2 2 0 009 22H15A2 2 0 0017 20V6"/>
+					</svg>
+				</button>
+			</div>
+		</div>
+	{% else %}
+		<div class="col-span-full text-center text-gray-400 py-6">
+			Aucun post trouvé.
+		</div>
+	{% endfor %}
+</div>

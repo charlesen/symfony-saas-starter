@@ -74,11 +74,8 @@
 
 	{# RESULTATS #}
 	{% if this.results %}
-		<div class="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-			{% for post in this.results %}
-				{% include "components/_post_details.html.twig" %}
-			{% endfor %}
-		</div>
+
+		{% include "components/_post_list.html.twig" with {'posts': this.results} %}
 
 		{# VOIR PLUS #}
 		<div class="mt-4 text-center">
