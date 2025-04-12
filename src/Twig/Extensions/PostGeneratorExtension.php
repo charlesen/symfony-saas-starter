@@ -11,7 +11,7 @@ class PostGeneratorExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('postgen_options', [$this, 'getOptions']),
+            new TwigFunction('postgen_options', [$this, 'getOptions'])
         ];
     }
 

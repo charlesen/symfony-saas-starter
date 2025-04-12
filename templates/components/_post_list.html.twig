@@ -24,7 +24,7 @@
 					</button>
 				</div>
 
-				<p class="text-gray-800 dark:text-gray-300 text-sm mt-2 leading-normal">{{ post.content|slice(0, 200) }}...</p>
+				<p class="text-gray-800 dark:text-gray-300 text-sm mt-2 leading-normal">{{ post.content | slice(0, 200) | auto_format_ia }}...</p>
 			</div>
 		</a>
 	{% endfor %}
