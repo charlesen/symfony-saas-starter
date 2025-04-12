@@ -6,12 +6,15 @@ export default class extends Controller {
 
     const itemElement = event.currentTarget;
     const modalElement = document.getElementById("app_modal");
+    const id = itemElement.dataset.id;
 
-    if (!modalElement) return;
+    const template = document.getElementById(`post-content-${id}`);
+
+    if (!modalElement || !template) return;
 
     // Remplir contenu dynamique
     modalElement.querySelector("#app_modal_content").innerHTML =
-      itemElement.dataset.content || "";
+      template.innerHTML || "";
     modalElement.querySelector("#app_modal_title").innerHTML =
       itemElement.dataset.title || "Details";
 

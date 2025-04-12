@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-controller="modal">
 	{% include "_modal.html.twig" %}
 	{% for post in posts %}
-		<a href="#" data-action="click->modal#open" data-content="{{ post.content }}" data-id="{{ post.id }}" data-title="Post de {{ app.user.fullname|default('PostGenius User') }}">
+		<a href="#" data-action="click->modal#open" data-id="{{ post.id }}" data-title="Post de {{ app.user.fullname|default('PostGenius User') }}">
 			<div class="bg-white dark:bg-gray-800 border shadow-sm px-4 py-3 rounded-lg relative group transition-opacity duration-300 animate-fade-in">
 				<div class="flex items-center">
 					<img class="h-10 w-10 rounded-full object-cover" src="{{ asset('build/images/default-user.svg') }}" alt="Avatar">
@@ -25,6 +25,10 @@
 				</div>
 
 				<p class="text-gray-800 dark:text-gray-300 text-sm mt-2 leading-normal">{{ post.content | slice(0, 200) | auto_format_ia }}...</p>
+
+				<template id="post-content-{{ post.id }}">
+					{{ post.content|auto_format_ia }}
+				</template>
 			</div>
 		</a>
 	{% endfor %}
