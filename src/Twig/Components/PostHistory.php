@@ -22,6 +22,13 @@ final class PostHistory
     #[LiveProp(writable: true)]
     public int $offset = 0;
 
+    #[LiveProp(writable: true)]
+    public ?int $editingPostId = null;
+
+    #[LiveProp(writable: true)]
+    public ?string $editingContent = null;
+
+
     public array $posts = [];
 
     public int $totalPosts = 0;
@@ -34,6 +41,42 @@ final class PostHistory
 
     public function mount(): void
     {
+        $this->loadPosts();
+    }
+
+    #[LiveAction]
+    public function edit(int $id): void
+    {
+        $post = $this->postHistoryRepository->find($id);
+        if (!$post || $post->getOwner() !== $this->security->getUser()) {
+            return;
+        }
+
+        $this->editingPostId = $id;
+        $this->editingContent = $post->getContent();
+    }
+
+    #[LiveAction]
+    public function cancelEdit(): void
+    {
+        $this->editingPostId = null;
+        $this->editingContent = null;
+    }
+
+    #[LiveAction]
+    public function saveEdit(#[LiveArg] int $id, #[LiveArg] string $content): void
+    {
+        $post = $this->postHistoryRepository->find($id);
+        if (!$post || $post->getOwner() !== $this->security->getUser()) {
+            return;
+        }
+
+        $post->setContent($content);
+        $this->em->flush();
+
+        $this->editingPostId = null;
+        $this->editingContent = null;
+
         $this->loadPosts();
     }
 
