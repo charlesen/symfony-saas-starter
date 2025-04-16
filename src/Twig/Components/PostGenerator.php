@@ -11,12 +11,15 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 #[AsLiveComponent('PostGenerator')]
 final class PostGenerator extends AbstractController
 {
     use DefaultActionTrait;
+    use ComponentToolsTrait;
+
 
     public const TONES = [
         'Professional',
@@ -59,9 +62,7 @@ final class PostGenerator extends AbstractController
     #[LiveProp(writable: true)] public int $language = 0;
     #[LiveProp(writable: true)] public string $keywords = '';
     #[LiveProp(writable: true)] public int $limit = 3;
-    #[LiveProp(writable: true)] public ?int $editingPostId = null;
 
-    public array $results = [];
     public ?string $error = null;
 
     public function __construct(
@@ -70,40 +71,6 @@ final class PostGenerator extends AbstractController
         private Security $security,
         private PostHistoryRepository $postHistoryRepository
     ) {}
-
-    public function mount(): void
-    {
-        $this->results = $this->postHistoryRepository->findPaginatedByUser($this->security->getUser());
-    }
-
-    #[LiveAction]
-    public function edit(int $id): void
-    {
-        $this->editingPostId = $id;
-    }
-
-    #[LiveAction]
-    public function cancelEdit(): void
-    {
-        $this->editingPostId = null;
-    }
-
-    #[LiveAction]
-    public function saveEdit(int $id, string $content): void
-    {
-        $post = $this->postHistoryRepository->find($id);
-
-        if (!$post || $post->getOwner() !== $this->security->getUser()) {
-            $this->addFlash('error', 'Not allowed.');
-            return;
-        }
-
-        $post->setContent($content);
-        $this->em->flush();
-
-        $this->editingPostId = null;
-        $this->loadMore();
-    }
 
 
     #[LiveAction]
@@ -141,18 +108,20 @@ final class PostGenerator extends AbstractController
                     $history->setContent($result);
                     $history->setOwner($this->security->getUser());
                     $this->em->persist($history);
-                    $this->results[] = $history;
                 }
             }
 
             $this->em->flush();
+
+            // Rafraîchissement de la page
+            $this->emit('post:generated');
         } catch (\Throwable $e) {
             $this->error = $e->getMessage();
         }
     }
 
     #[LiveAction]
-    public function loadMore(): void
+    public function generateMore(): void
     {
         $this->limit += 3;
         $this->generate();
