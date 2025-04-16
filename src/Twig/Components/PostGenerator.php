@@ -88,7 +88,7 @@ final class PostGenerator extends AbstractController
                     'Content-Type' => 'application/json',
                 ],
                 'json' => [
-                    'model' => $_ENV['OPENAI_MODEL'] ?? 'gpt-3.5-turbo',
+                    'model' => $_ENV['OPENAI_MODEL'] ?? 'gpt-4.1-nano',
                     'messages' => [
                         ["role" => "system", "content" => "You are a helpful assistant generating LinkedIn posts."],
                         ["role" => "user", "content" => $prompt],
@@ -99,16 +99,12 @@ final class PostGenerator extends AbstractController
             $data = $response->toArray();
             $content = $data['choices'][0]['message']['content'] ?? '';
 
-            $results = array_map('trim', explode('###', $content));
-
             // Sauvegarde des posts générés
-            foreach ($results as $result) {
-                if (!empty($result)) {
-                    $history = new PostHistory();
-                    $history->setContent($result);
-                    $history->setOwner($this->security->getUser());
-                    $this->em->persist($history);
-                }
+            if (!empty($content)) {
+                $history = new PostHistory();
+                $history->setContent(trim($content));
+                $history->setOwner($this->security->getUser());
+                $this->em->persist($history);
             }
 
             $this->em->flush();
@@ -136,7 +132,7 @@ final class PostGenerator extends AbstractController
         return <<<PROMPT
         Role: You are a Senior Data Scientist specialized in social media analysis and content strategy with over 10 years of experience optimizing LinkedIn posts for top creators. You excel in creating viral and qualitative hooks, with posts generating an average of 500 likes, and 30% of your content exceeding 1,000 likes.
 
-        Objective: Create a LinkedIn post in {$language} that is engaging, concise, and likely to go viral, based on the topic provided.
+        Objective: Write ONE complete, high-quality LinkedIn post in {$language} that is engaging, concise, and likely to go viral, based on the topic provided.  It must be engaging, structured, and at least 1500 characters long.
 
         Topic: "{$this->topic}"
 
@@ -156,11 +152,12 @@ final class PostGenerator extends AbstractController
 
         Important:
         - Write ONLY in {$language}
-        - Separate each generated post with '###'
-        - Generate {$this->limit} different posts
         - Maximize engagement, readability, and authenticity
         - No hashtags except if highly relevant
         - Use bullet points / lists if appropriate
+
+        Target: The result should read like a powerful, stand-alone LinkedIn post from a professional who writes with both strategic insight and emotional intelligence. Every word must serve the value.
+        
         PROMPT;
     }
 
