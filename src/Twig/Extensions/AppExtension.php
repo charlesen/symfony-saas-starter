@@ -29,8 +29,12 @@ class AppExtension extends AbstractExtension
         // Italique *text*
         $content = preg_replace('/(?<!\*)\*(?!\*)(.*?)\*(?!\*)/s', '<em>$1</em>', $content);
 
+        // Séparateur horizontal : --- ou ***
+        $content = preg_replace('/^(\-\-\-|\*\*\*)$/m', '<hr>', $content);
+
         // Gestion des listes "- item" ou "* item"
         $content = preg_replace('/(\n|^)[\-\*]\s(.*?)(\n|$)/', '$1<li>$2</li>$3', $content);
+
 
         // Encapsuler les <li> détectés dans <ul>
         $content = preg_replace('/(<li>.*<\/li>)/s', '<ul>$1</ul>', $content);
