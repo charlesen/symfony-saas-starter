@@ -52,7 +52,7 @@ https://localhost:8000
 
 - [x] Connexion / Inscription par email
 - [x] Confirmation d'adresse email
-- [ ] Mot de passe oublié
+- [x] Mot de passe oublié
 - [ ] Connexion via Google
 - [ ] Connexion via LinkedIn
 

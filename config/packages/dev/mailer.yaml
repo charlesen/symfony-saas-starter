@@ -1,0 +1,7 @@
+framework:
+  mailer:
+    envelope:
+      sender: "no-reply@pg.edounze.com"
+    dsn: "%env(MAILER_DSN)%"
+    headers:
+      X-Debug-Email: true

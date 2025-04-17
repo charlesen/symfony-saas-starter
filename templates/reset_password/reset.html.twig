@@ -1,14 +1,52 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}
-	{{'Reset your password' | trans}}
+	{{ 'Reset your password' | trans }}
 {% endblock %}
 
 {% block content %}
-	<h1>{{'Reset your password' | trans}}</h1>
+	<div class="flex flex-col items-center justify-center px-6 mx-auto md:h-screen lg:py-0">
 
-	{{ form_start(resetForm) }}
-	{{ form_row(resetForm.plainPassword) }}
-	<button class="btn btn-blue">{{'Reset password' | trans}}</button>
-	{{ form_end(resetForm) }}
+		<div class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md dark:bg-gray-800 dark:border-gray-700 p-6 sm:p-8">
+			<h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white mb-1">
+				{{ 'Reset your password' | trans }}
+			</h1>
+
+			<p class="mb-5 text-sm text-gray-500 dark:text-gray-400">
+				{{ 'Enter your new password below' | trans }}
+			</p>
+			{{ form_start(resetForm, { attr: { class: 'space-y-4 lg:space-y-5' } }) }}
+
+			<div>
+				<label for="{{ resetForm.plainPassword.first.vars.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+					{{ 'New password' | trans }}
+				</label>
+				{{ form_widget(resetForm.plainPassword.first, {
+		attr: {
+			class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+		}
+	}) }}
+				{{ form_errors(resetForm.plainPassword.first) }}
+			</div>
+
+			<div>
+				<label for="{{ resetForm.plainPassword.second.vars.id }}" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+					{{ 'Repeat password' | trans }}
+				</label>
+				{{ form_widget(resetForm.plainPassword.second, {
+		attr: {
+			class: 'bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+		}
+	}) }}
+				{{ form_errors(resetForm.plainPassword.second) }}
+			</div>
+
+			<button type="submit" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 dark:bg-blue-500 dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+				{{ 'Reset password' | trans }}
+			</button>
+
+			{{ form_end(resetForm) }}
+
+		</div>
+	</div>
 {% endblock %}
