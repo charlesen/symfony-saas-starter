@@ -1,0 +1,55 @@
+<div {{ attributes }} class="max-w-xl space-y-6">
+
+	<div class="flex flex-row min-h-screen justify-center items-center">
+		{% if app.user.image %}
+			<img src="{{ asset(app.user.image) }}" class="size-24 max-w-xs rounded-full object-cover" width="100" alt="Profile">
+		{% else %}
+			<img src="{{ asset('build/images/default-user.svg') }}" class="size-24 max-w-xs rounded-full object-cover" width="100" alt="Default">
+		{% endif %}
+	</div>
+
+	{{ form_start(form, { attr: { class: 'space-y-4', enctype: 'multipart/form-data', } }) }}
+
+	{% if form.vars.errors|length > 0 %}
+		<div class="text-red-600 text-sm">
+			{{ form_errors(form) }}
+		</div>
+	{% endif %}
+
+	{{ form_row(form.username, {
+            label_attr: { class: 'block text-sm font-medium text-gray-700 dark:text-white' },
+            attr: { class: 'w-full p-2 rounded bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 text-sm' }
+        }) }}
+	{{ form_row(form.fullname, {
+            label_attr: { class: 'block text-sm font-medium text-gray-700 dark:text-white' },
+            attr: { class: 'w-full p-2 rounded bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 text-sm' }
+        }) }}
+
+	{# <div>
+			<label for="profile_picture" class="block text-sm font-medium text-gray-700 dark:text-white">
+				{{ 'Profile picture'|trans }}
+			</label>
+			<input type="file" name="profile_picture" autocomplete="off" id="profile_picture" class="form-control-file {{ singleFileUploadError ? 'is-invalid' : '' }}">
+	
+			{% if singleFileUploadError %}
+				<div class="invalid-feedback">{{ singleFileUploadError }}</div>
+			{% endif %}
+		</div> #}
+
+	<div>
+		<label for="{{ form.imageFilename.vars.id }}" class="block text-sm font-medium text-gray-700 dark:text-white">
+			{{ 'Profile picture'|trans }}
+		</label>
+		{{ form_widget(form.imageFilename, {
+        attr: {
+            class: 'block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
+        }
+    }) }}
+		{{ form_errors(form.imageFilename) }}
+	</div>
+
+	<button data-action="live#action" data-live-action-param="files(user_profile[imageFilename])|save" data-live-submit="prevent" class="w-full text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+		{{ 'Save changes'|trans }}
+	</button>
+	{{ form_end(form) }}
+</div>
