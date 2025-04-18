@@ -60,9 +60,9 @@ https://localhost:8000
 ### ⚙️ Compte & Préférences
 
 - [x] Modification des infos utilisateur
-- [x] Mise à jour E-mail
+- [x] Mise à jour E-mail utilisateur
 - [ ] Préférences de langue / thème
-- [ ] Suppression du compte
+- [x] Suppression du compte
 
 ### 🧾 Abonnement / Stripe
 

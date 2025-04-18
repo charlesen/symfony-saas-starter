@@ -46,7 +46,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private bool $isVerified = false;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = 'images/default-user.svg';
+    private ?string $image = '';
 
     /**
      * @var Collection<int, PostHistory>
@@ -56,6 +56,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(nullable: true)]
     private ?bool $isPendingEmail = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lang  = 'en';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $preferedTheme = 'system';
 
     public function __construct()
     {
@@ -223,6 +229,30 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsPendingEmail(?bool $isPendingEmail): static
     {
         $this->isPendingEmail = $isPendingEmail;
+
+        return $this;
+    }
+
+    public function getLang(): ?string
+    {
+        return $this->lang;
+    }
+
+    public function setLang(?string $lang): static
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
+    public function getPreferedTheme(): ?string
+    {
+        return $this->preferedTheme;
+    }
+
+    public function setPreferedTheme(?string $preferedTheme): static
+    {
+        $this->preferedTheme = $preferedTheme;
 
         return $this;
     }

@@ -21,6 +21,7 @@ class PostHistory
     private ?string $content = null;
 
     #[ORM\ManyToOne(inversedBy: 'postHistories')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL', nullable: true)]
     private ?User $owner = null;
 
     #[ORM\Column(nullable: true)]

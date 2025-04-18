@@ -9,6 +9,7 @@ use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mime\Address;
@@ -26,7 +27,7 @@ class RegistrationController extends AbstractController
     ) {}
 
     #[Route('/register', name: 'register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security): Response
     {
         // If logged in, redirect to home page
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -57,7 +58,8 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            // do anything else you need here, like send an email
+            // Force login
+            $security->login($user);
 
             return $this->redirectToRoute('dashboard_index');
         }

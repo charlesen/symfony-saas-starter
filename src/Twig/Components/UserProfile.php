@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -74,21 +75,16 @@ final class UserProfile extends AbstractController
         $this->addFlash('success', 'Profile updated successfully');
     }
 
-    private function validateSingleFile(UploadedFile $singleFileUpload): void
+    #[LiveAction]
+    public function deleteAccount(): RedirectResponse
     {
-        $errors = $this->validator->validate($singleFileUpload, [
-            new Assert\File([
-                'maxSize' => '1M',
-            ]),
-        ]);
+        $user = $this->initialFormData;
 
-        if (0 === \count($errors)) {
-            return;
-        }
+        $this->em->remove($user);
+        $this->em->flush();
 
-        $this->singleFileUploadError = $errors->get(0)->getMessage();
+        $this->addFlash('success', 'Your account has been deleted');
 
-        // causes the component to re-render
-        throw new UnprocessableEntityHttpException('Validation failed');
+        return $this->redirectToRoute('logout'); // ou page de logout
     }
 }

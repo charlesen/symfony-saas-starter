@@ -5,13 +5,14 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 #[Route('/{_locale}', requirements: ['_locale' => 'en|es|fr'])]
 class LoginController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, CsrfTokenManagerInterface $csrfTokenManager): Response
     {
         // If logged in, redirect to home page
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -26,7 +27,7 @@ class LoginController extends AbstractController
 
         return $this->render('login/login.html.twig', [
             'last_username' => $lastUsername,
-            'error' => $error,
+            'error' => $error
         ]);
     }
 

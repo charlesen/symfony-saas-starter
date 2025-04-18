@@ -1,13 +1,13 @@
 <div{{attributes}} class="max-w-xl space-y-6 mx-auto">
-	{{ form_start(form) }}
+
+	<h2 class="text-lg font-bold text-center">{{'Email update' | trans}}</h2>
+
 
 	<p class="text-center">
-		{{'Current e-mail' | trans}}
-		:
-		<strong>
-			{{app.user.email}}
-		</strong>
+		{{app.user.email}}
 	</p>
+
+	{{ form_start(form) }}
 
 	{{ form_row(form.newEmail, {
             label_attr: { class: 'block text-sm font-medium text-gray-700 dark:text-white' },
