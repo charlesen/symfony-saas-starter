@@ -54,6 +54,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: PostHistory::class, mappedBy: 'owner')]
     private Collection $postHistories;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isPendingEmail = false;
+
     public function __construct()
     {
         $this->postHistories = new ArrayCollection();
@@ -208,6 +211,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $postHistory->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isPendingEmail(): ?bool
+    {
+        return $this->isPendingEmail;
+    }
+
+    public function setIsPendingEmail(?bool $isPendingEmail): static
+    {
+        $this->isPendingEmail = $isPendingEmail;
 
         return $this;
     }

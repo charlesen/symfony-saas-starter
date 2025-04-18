@@ -55,10 +55,11 @@ https://localhost:8000
 - [x] Mot de passe oublié
 - [ ] Connexion via Google
 - [ ] Connexion via LinkedIn
+- [ ] Connexion via X
 
 ### ⚙️ Compte & Préférences
 
-- [ ] Modification des infos utilisateur
+- [x] Modification des infos utilisateur
 - [ ] Préférences de langue / thème
 - [ ] Suppression du compte
 
@@ -73,15 +74,14 @@ https://localhost:8000
 
 ### 📬 Emails
 
-- [ ] Email de bienvenue
-- [ ] Confirmation d’email
+- [x] Email de bienvenue
+- [x] Confirmation d’email
 - [ ] Notifications (réinitialisation, abonnement)
 
 ### 🧱 Permissions
 
 - [x] `ROLE_USER` & `ROLE_ADMIN`
 - [ ] Gestion d'équipes
-- [ ] Multi-tenant support
 
 ### 📊 Dashboard
 
