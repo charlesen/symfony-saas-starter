@@ -60,6 +60,7 @@ https://localhost:8000
 ### ⚙️ Compte & Préférences
 
 - [x] Modification des infos utilisateur
+- [x] Mise à jour E-mail
 - [ ] Préférences de langue / thème
 - [ ] Suppression du compte
 
