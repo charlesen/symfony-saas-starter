@@ -1,70 +1,57 @@
-import { Controller } from '@hotwired/stimulus';
+import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-    static targets = ['select'];
-    static values = {
-        theme: String,
-        updateUrl: String
-    };
+    static targets = ["select"];
+    static values = { theme: String };
 
     connect() {
-        // Initialiser le thème au chargement
-        this.updateTheme(this.themeValue || 'system');
-        
-        // Écouter les changements de préférence système
-        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (this.themeValue === 'system') {
-                this.applyTheme('system');
-            }
-        });
+        const theme = this.themeValue || this.getStoredTheme() || "system";
+        this.applyTheme(theme);
+        this._boundHandleSystemThemeChange = this.handleSystemThemeChange.bind(this);
+        window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", this._boundHandleSystemThemeChange);
+        if (this.hasSelectTarget) {
+            this.selectTarget.value = theme;
+        }
     }
 
-    // Quand l'utilisateur change le thème dans le select
-    async change(event) {
+    disconnect() {
+        window.matchMedia("(prefers-color-scheme: dark)").removeEventListener("change", this._boundHandleSystemThemeChange);
+    }
+
+    change(event) {
         const theme = event.target.value;
-        await this.updateTheme(theme);
+        this.themeValue = theme;
+        this.storeTheme(theme);
+        this.applyTheme(theme);
     }
 
-    // Mettre à jour le thème
-    async updateTheme(theme) {
-        // Sauvegarder en BDD
-        const formData = new FormData();
-        formData.append('theme', theme);
-
-        try {
-            const response = await fetch(this.updateUrlValue, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            // Mettre à jour le thème
-            this.themeValue = theme;
-            this.applyTheme(theme);
-            
-            // Mettre à jour le select
-            if (this.hasSelectTarget) {
-                this.selectTarget.value = theme;
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-
-    // Appliquer le thème
     applyTheme(theme) {
-        if (theme === 'system') {
-            // Utiliser la préférence système
-            const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            document.documentElement.classList.remove('dark', 'light');
-            document.documentElement.classList.add(systemTheme);
+        if (theme === "system") {
+            const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.documentElement.classList.toggle("dark", systemIsDark);
+        } else if (theme === "dark") {
+            document.documentElement.classList.add("dark");
         } else {
-            // Utiliser le thème choisi
-            document.documentElement.classList.remove('dark', 'light');
-            document.documentElement.classList.add(theme);
+            document.documentElement.classList.remove("dark");
         }
+    }
+
+    handleSystemThemeChange() {
+        const theme = this.themeValue || this.getStoredTheme() || "system";
+        if (theme === "system") {
+            this.applyTheme("system");
+        }
+    }
+
+    storeTheme(theme) {
+        if (theme === "system") {
+            localStorage.removeItem("theme");
+        } else {
+            localStorage.setItem("theme", theme);
+        }
+    }
+
+    getStoredTheme() {
+        return localStorage.getItem("theme");
     }
 }
