@@ -22,6 +22,7 @@ final class DashboardController extends AbstractController
     #[Route('/profile', name: 'profile', methods: ['GET'])]
     public function profile(Request $request, EntityManagerInterface $em): Response
     {
+        // $this->addFlash('success', 'Profile updated successfully');
         /** @var User $user */
         $user = $this->getUser();
         // On ne gère plus la sauvegarde ici, tout passe par le LiveComponent
