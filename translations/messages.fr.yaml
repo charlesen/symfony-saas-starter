@@ -41,3 +41,29 @@ Update profile: Mettre à jour le profil
 Save changes: Enregistrer les modifications
 Profile updated: Profil mis à jour
 Delete account: Supprimer le compte
+
+# Général
+Dashboard: Tableau de bord
+Profile: Profil
+Billing: Facturation
+Settings: Paramètres
+Help: Aide
+Logout: Déconnexion
+
+# Profil
+Username: Nom d'utilisateur
+Fullname: Nom complet
+Email: Email
+Password: Mot de passe
+Save: Enregistrer
+'Save changes': 'Enregistrer les modifications'
+
+# Messages
+'There is already an account with this email': 'Un compte existe déjà avec cet email'
+'Your changes were saved!': 'Vos modifications ont été enregistrées !'
+
+# Thème
+'Theme': 'Thème'
+'System': 'Système'
+'Light': 'Clair'
+'Dark': 'Sombre'
