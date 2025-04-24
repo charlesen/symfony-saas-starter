@@ -14,8 +14,12 @@ services:
       - APP_ENV=${APP_ENV:-dev}
       - XDEBUG_MODE=${XDEBUG_MODE:-off}
     depends_on:
-      - database
-      - mailhog
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mailhog:
+        condition: service_started
 
   nginx:
     image: nginx:alpine
@@ -26,6 +30,12 @@ services:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       - php
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:80/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
   database:
     image: mysql:8.0
@@ -64,7 +74,8 @@ services:
       - ADMINER_DEFAULT_SERVER=database
       - ADMINER_DESIGN=dracula
     depends_on:
-      - database
+      database:
+        condition: service_healthy
 
   redis:
     image: redis:alpine
@@ -73,6 +84,12 @@ services:
     volumes:
       - redis_data:/data
     command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
 
 volumes:
   mysql_data:

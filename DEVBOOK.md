@@ -17,6 +17,7 @@ Ce document recense l'état d'avancement réel du projet et sert de guide de val
   - [x] Nginx
     - [x] Configuration optimisée
     - [x] Gestion du cache des assets
+    - [x] Endpoint de healthcheck (/ping)
   - [x] MySQL 8.0
     - [x] Configuration optimisée
     - [x] Persistence des données
@@ -29,8 +30,16 @@ Ce document recense l'état d'avancement réel du projet et sert de guide de val
     - [x] Xdebug configuré
   - [x] Healthchecks
     - [x] MySQL
-    - [ ] Redis
-    - [ ] Nginx
+    - [x] Redis
+    - [x] Nginx
+  - [x] Scripts de gestion
+    - [x] start.sh (démarrage avec installation)
+    - [x] stop.sh (arrêt propre)
+    - [x] reset.sh (réinitialisation complète)
+  - [x] Documentation
+    - [x] Variables d'environnement (.env.dist)
+    - [x] Ports et services
+    - [x] Configuration des services
 - [x] Configuration Symfony
   - [x] Version 7.2+ validée
   - [x] Environnements (.env) correctement configurés
