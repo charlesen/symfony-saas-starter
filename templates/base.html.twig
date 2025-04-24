@@ -46,8 +46,9 @@
 		</script>
 	</head>
 	<body class="bg-white dark:bg-gray-800 dark:text-white" data-controller="app">
+		{{ component('FlashMessage') }}
 		<div class="flash">
-			{% include "_flash.html.twig" %}
+			{# L'ancien include n'est plus utile : {% include "_flash.html.twig" %} #}
 		</div>
 		{% block body %}{% endblock %}
 	</body>

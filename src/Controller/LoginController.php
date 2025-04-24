@@ -8,7 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[Route('/{_locale}', requirements: ['_locale' => 'en|es|fr'])]
+#[Route('/{_locale}', requirements: ['_locale' => 'en|es|fr|de'])]
 class LoginController extends AbstractController
 {
     #[Route(path: '/login', name: 'login')]

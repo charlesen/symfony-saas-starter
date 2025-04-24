@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
     static targets = ["select"];
-    static values = { theme: String };
+    static values = { theme: String, themeUpdateUrl: String };
 
     connect() {
         const theme = this.themeValue || this.getStoredTheme() || "system";
@@ -11,6 +11,11 @@ export default class extends Controller {
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", this._boundHandleSystemThemeChange);
         if (this.hasSelectTarget) {
             this.selectTarget.value = theme;
+        }
+        // If system, set cookie on load
+        if (theme === "system") {
+            const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            document.cookie = `system-theme=${systemIsDark ? 'dark' : 'light'}; path=/; SameSite=Lax`;
         }
     }
 
@@ -23,16 +28,31 @@ export default class extends Controller {
         this.themeValue = theme;
         this.storeTheme(theme);
         this.applyTheme(theme);
+        // Save user preference to backend if possible
+        if (this.hasValue("themeUpdateUrl")) {
+            fetch(this.themeUpdateUrlValue, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+                body: JSON.stringify({ theme }),
+            });
+        }
     }
 
     applyTheme(theme) {
+        // Always remove both 'dark' and 'light' classes first
+        document.documentElement.classList.remove("dark", "light");
         if (theme === "system") {
             const systemIsDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            document.documentElement.classList.toggle("dark", systemIsDark);
+            document.documentElement.classList.add(systemIsDark ? "dark" : "light");
+            // Store system theme in cookie for backend
+            document.cookie = `system-theme=${systemIsDark ? 'dark' : 'light'}; path=/; SameSite=Lax`;
         } else if (theme === "dark") {
             document.documentElement.classList.add("dark");
         } else {
-            document.documentElement.classList.remove("dark");
+            document.documentElement.classList.add("light");
         }
     }
 

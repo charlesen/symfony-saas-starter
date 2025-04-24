@@ -11,7 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[IsGranted('ROLE_USER')]
-#[Route('/{_locale}/dashboard/theme', requirements: ['_locale' => 'en|es|fr'], name: 'dashboard_theme_')]
+#[Route('/{_locale}/dashboard/theme', requirements: ['_locale' => 'en|es|fr|de'], name: 'dashboard_theme_')]
 final class ThemeController extends AbstractController
 {
     #[Route('/update', name: 'update', methods: ['POST'])]

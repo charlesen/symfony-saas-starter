@@ -26,7 +26,6 @@ Next billing: Prochaine facturation
 Quick actions: Actions rapides
 Upgrade plan: Améliorer l'abonnement
 Get more features: Obtenir plus de fonctionnalités
-Profile: Profil
 Update your info: Mettre à jour vos informations
 Settings: Paramètres
 Configure app: Configurer l'application
@@ -36,6 +35,7 @@ Recent activity: Activité récente
 Last login: Dernière connexion
 
 # Profile
+Profile: Profil
 My profile: Mon profil
 Update profile: Mettre à jour le profil
 Save changes: Enregistrer les modifications
@@ -43,27 +43,25 @@ Profile updated: Profil mis à jour
 Delete account: Supprimer le compte
 
 # Général
-Dashboard: Tableau de bord
-Profile: Profil
 Billing: Facturation
-Settings: Paramètres
-Help: Aide
-Logout: Déconnexion
 
 # Profil
-Username: Nom d'utilisateur
 Fullname: Nom complet
-Email: Email
-Password: Mot de passe
 Save: Enregistrer
-'Save changes': 'Enregistrer les modifications'
+
+# Validators
+Please upload a valid image: Veuillez télécharger une image valide
+You should agree to our terms.: Vous devez accepter nos conditions.
+Please enter a password: Veuillez saisir un mot de passe
+Your password should be at least {{ limit }} characters: Votre mot de passe doit contenir au moins {{ limit }} caractères
+Please enter your email: Veuillez saisir votre adresse email
+There is already an account with this email: Un compte existe déjà avec cet email
 
 # Messages
-'There is already an account with this email': 'Un compte existe déjà avec cet email'
-'Your changes were saved!': 'Vos modifications ont été enregistrées !'
+Your changes were saved!: Vos modifications ont été enregistrées !
 
 # Thème
-'Theme': 'Thème'
-'System': 'Système'
-'Light': 'Clair'
-'Dark': 'Sombre'
+Theme: Thème
+System: Système
+Light: Clair
+Dark: Sombre

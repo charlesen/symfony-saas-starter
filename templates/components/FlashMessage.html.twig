@@ -1,0 +1,17 @@
+<div id="live-flash-container" class="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 w-full max-w-md space-y-2">
+    {% for type, messages in this.flashes %}
+        {% if messages is not empty %}
+            {% for message in messages %}
+                <div data-controller="auto-dismiss" class="flex items-center px-4 py-3 rounded shadow-lg text-white animate-fade-in {{
+                    type == 'success' ? 'bg-green-500' :
+                    type == 'info' ? 'bg-blue-500' :
+                    type == 'danger' ? 'bg-red-500' :
+                    type == 'warning' ? 'bg-yellow-500 text-gray-900' : 'bg-gray-500'
+                }}">
+                    <span class="flex-1">{{ message|trans }}</span>
+                    <button type="button" class="ml-3 focus:outline-none" data-action="click->auto-dismiss#close">&times;</button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+</div>

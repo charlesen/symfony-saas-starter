@@ -21,7 +21,7 @@ use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 
-#[Route('/{_locale}/reset-password', requirements: ['_locale' => 'en|es|fr'])]
+#[Route('/{_locale}/reset-password', requirements: ['_locale' => 'en|es|fr|de'])]
 class ResetPasswordController extends AbstractController
 {
     use ResetPasswordControllerTrait;
