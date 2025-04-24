@@ -1,7 +1,7 @@
 # General
 Home: Accueil
 Language: Langue
-About: A propos
+About: À propos
 Contact: Contact
 
 # Login
@@ -10,9 +10,34 @@ Email: Adresse email
 Password: Mot de passe
 Sign in: Se connecter
 Login: Connexion
-Logout: Déconnexion
+Logout: Déconnexion
 
 # Register
 Register: S'inscrire
 Create your account: Créer votre compte
 I accept the terms and conditions: J'accepte les conditions d'utilisation
+
+# Dashboard
+Dashboard: Tableau de bord
+Overview: Vue d'ensemble
+Subscription: Abonnement
+Status: Statut
+Next billing: Prochaine facturation
+Quick actions: Actions rapides
+Upgrade plan: Améliorer l'abonnement
+Get more features: Obtenir plus de fonctionnalités
+Profile: Profil
+Update your info: Mettre à jour vos informations
+Settings: Paramètres
+Configure app: Configurer l'application
+Help: Aide
+Get support: Obtenir de l'aide
+Recent activity: Activité récente
+Last login: Dernière connexion
+
+# Profile
+My profile: Mon profil
+Update profile: Mettre à jour le profil
+Save changes: Enregistrer les modifications
+Profile updated: Profil mis à jour
+Delete account: Supprimer le compte
