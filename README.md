@@ -108,6 +108,14 @@ docker compose exec php bin/phpunit --testsuite=functional
 - `./docker/scripts/stop.sh` : Arrêter l'environnement
 - `./docker/scripts/reset.sh` : Réinitialiser complètement l'environnement
 
+## 🤝 Contribuer
+
+Vous souhaitez participer à l'évolution du projet ? Consultez le fichier [CONTRIBUTING.md](CONTRIBUTING.md) pour connaître les bonnes pratiques, le workflow de contribution et les règles de collaboration.
+
 ## 📝 Documentation
 
 Pour plus d'informations sur le développement, consultez [DEVBOOK.md](DEVBOOK.md).
+
+## 📄 Licence
+
+Ce projet est distribué sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus d'informations.
