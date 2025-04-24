@@ -8,11 +8,25 @@ NC='\033[0m'
 
 echo -e "${YELLOW}🚀 Démarrage de l'environnement de développement...${NC}"
 
-# Vérifier si .env existe, sinon le créer à partir de .env.dist
-if [ ! -f .env ]; then
-    echo -e "${YELLOW}⚙️  Fichier .env non trouvé, création à partir de .env.dist...${NC}"
-    cp .env.dist .env
-    echo -e "${GREEN}✅ Fichier .env créé${NC}"
+# Vérifier si .env.local existe, sinon le créer à partir de .env.local.example
+if [ ! -f .env.local ]; then
+    echo -e "${YELLOW}⚙️  Fichier .env.local non trouvé, création à partir de .env.local.example...${NC}"
+    if [ -f .env.local.example ]; then
+        cp .env.local.example .env.local
+        echo -e "${GREEN}✅ Fichier .env.local créé${NC}"
+        echo -e "${YELLOW}⚠️  N'oubliez pas de configurer vos variables dans .env.local${NC}"
+    else
+        echo -e "${RED}❌ Fichier .env.local.example non trouvé${NC}"
+        exit 1
+    fi
+fi
+
+# Générer APP_SECRET si non défini
+if ! grep -q "^APP_SECRET=" .env.local || grep -q "^APP_SECRET=!ChangeThis!" .env.local; then
+    echo -e "${YELLOW}🔑 Génération d'un nouveau APP_SECRET...${NC}"
+    NEW_SECRET=$(openssl rand -hex 16)
+    sed -i "s/^APP_SECRET=.*$/APP_SECRET=$NEW_SECRET/" .env.local
+    echo -e "${GREEN}✅ Nouveau APP_SECRET généré${NC}"
 fi
 
 # Démarrer les containers
