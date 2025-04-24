@@ -21,6 +21,11 @@ if [ ! -f .env.local ]; then
     fi
 fi
 
+# Charger les variables d'environnement
+if [ -f .env.local ]; then
+    export $(cat .env.local | grep -v '^#' | xargs)
+fi
+
 # Générer APP_SECRET si non défini
 if ! grep -q "^APP_SECRET=" .env.local || grep -q "^APP_SECRET=!ChangeThis!" .env.local; then
     echo -e "${YELLOW}🔑 Génération d'un nouveau APP_SECRET...${NC}"
@@ -50,21 +55,55 @@ done
 echo -e "${YELLOW}📚 Installation des dépendances PHP...${NC}"
 docker compose exec -T php composer install
 
+# Installation des dépendances Node.js
 echo -e "${YELLOW}📚 Installation des dépendances Node.js...${NC}"
 docker compose exec -T php yarn install
 
-# Construction des assets
-echo -e "${YELLOW}🔨 Construction des assets...${NC}"
-docker compose exec -T php yarn dev
+# Création de la base de données avec l'utilisateur root
+echo -e "${YELLOW}🗄️  Création de la base de données...${NC}"
+if ! docker compose exec -T database bash -c "mysql -u root -p\${MYSQL_ROOT_PASSWORD} -e \"CREATE DATABASE IF NOT EXISTS \\\`\${MYSQL_DATABASE}\\\`\""; then
+    echo -e "${RED}❌ Erreur lors de la création de la base de données${NC}"
+    exit 1
+fi
 
-# Migrations de la base de données
-echo -e "${YELLOW}🔄 Exécution des migrations...${NC}"
-docker compose exec -T php bin/console doctrine:migrations:migrate --no-interaction
+# Attribution des droits à l'utilisateur app
+echo -e "${YELLOW}👤 Configuration des droits utilisateur...${NC}"
+if ! docker compose exec -T database bash -c "mysql -u root -p\${MYSQL_ROOT_PASSWORD} -e \"GRANT ALL PRIVILEGES ON \\\`\${MYSQL_DATABASE}\\\`.* TO '\${MYSQL_USER}'@'%'\""; then
+    echo -e "${RED}❌ Erreur lors de l'attribution des droits${NC}"
+    exit 1
+fi
+
+# Rafraîchir les privilèges
+docker compose exec -T database bash -c "mysql -u root -p\${MYSQL_ROOT_PASSWORD} -e \"FLUSH PRIVILEGES\""
+
+echo -e "${GREEN}✅ Base de données prête${NC}"
+
+# Application des migrations
+echo -e "${YELLOW}🔄 Application des migrations...${NC}"
+docker compose exec -T php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
+if [ $? -eq 0 ]; then
+    echo -e "${GREEN}✅ Migrations appliquées${NC}"
+else
+    echo -e "${RED}❌ Erreur lors de l'application des migrations${NC}"
+    exit 1
+fi
+
+# Chargement des fixtures en dev
+if [ "${APP_ENV:-dev}" = "dev" ] && [ -d "src/DataFixtures" ]; then
+    echo -e "${YELLOW}🌱 Chargement des fixtures...${NC}"
+    docker compose exec -T php bin/console doctrine:fixtures:load --no-interaction
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ Fixtures chargées${NC}"
+    else
+        echo -e "${RED}❌ Erreur lors du chargement des fixtures${NC}"
+        exit 1
+    fi
+fi
 
 echo -e "${GREEN}✅ Environnement de développement prêt !${NC}"
-echo -e "${GREEN}📝 Services disponibles :${NC}"
-echo -e "   • Application : ${YELLOW}http://localhost:8080${NC}"
-echo -e "   • Adminer    : ${YELLOW}http://localhost:8081${NC}"
-echo -e "   • Mailhog    : ${YELLOW}http://localhost:8025${NC}"
-echo -e "   • MySQL      : ${YELLOW}localhost:3306${NC}"
-echo -e "   • Redis      : ${YELLOW}localhost:6379${NC}"
+echo -e "${YELLOW}📝 Services disponibles :${NC}"
+echo -e "   • Application : http://localhost:8080"
+echo -e "   • Adminer    : http://localhost:8081"
+echo -e "   • Mailhog    : http://localhost:8025"
+echo -e "   • MySQL      : localhost:3306"
+echo -e "   • Redis      : localhost:6379"

@@ -1,98 +1,113 @@
-# Symfony SaaS Boilerplate
+# Symfony SaaS Starter
 
-> Base SaaS Symfony + Tailwind pour construire rapidement des produits modernes et extensibles.
-> Utilisé pour propulser [PostGenius] — Générateur de posts LinkedIn optimisés via IA.
+Boilerplate Symfony pour applications SaaS modernes.
 
----
+## ✨ Fonctionnalités principales
 
-## 🚀 Stack technique
+- 👤 **Authentification complète**
+  - Inscription/Connexion par email
+  - Réinitialisation de mot de passe
+  - Vérification d'email
+  - OAuth (Google, GitHub)
 
-- **Framework** : Symfony 7.2+
-- **Live Components** : Symfony UX LiveComponent
-- **UI** : Tailwind CSS + Stimulus
-- **Base de données** : Doctrine ORM (MySQL/PostgreSQL)
-- **Paiement** : Stripe Checkout & Billing Portal
-- **Authentification** :
-  - Email + mot de passe (avec validation)
-  - Google OAuth (via OAuth2 Client)
-- **Infrastructure** :
-  - Docker + Compose (`php`, `mysql`, `mailpit`)
-  - Webpack Encore
+- 💳 **Gestion des abonnements**
+  - Intégration Stripe
+  - Plans et tarification
+  - Facturation récurrente
+  - Période d'essai
 
----
+- 👥 **Gestion des utilisateurs**
+  - Profils utilisateurs
+  - Rôles et permissions
+  - Préférences utilisateur
+  - Multi-compte
 
-## 🛠️ Installation locale
+- 🎛️ **Dashboard**
+  - Vue d'ensemble
+  - Statistiques d'utilisation
+  - Gestion des abonnements
+  - Historique des paiements
 
+- 🔧 **Administration**
+  - Gestion des utilisateurs
+  - Monitoring
+  - Configuration système
+  - Logs et audit
+
+- 📧 **Notifications**
+  - Emails transactionnels
+  - Notifications in-app
+  - Templates personnalisables
+  - File d'attente des messages
+
+## 🚀 Installation
+
+1. Clonez le dépôt
 ```bash
-# Clone le projet
-git clone https://github.com/charlesen/symfony-sass-starter.git
+git clone https://github.com/votre-repo/symfony-sass-starter.git
 cd symfony-sass-starter
-
-# Lancer les conteneurs Docker
-docker compose up -d
-
-# Installer les dépendances PHP
-docker compose exec php composer install
-
-# Installer les dépendances JS
-docker compose exec php yarn install
-docker compose exec php yarn dev
-
-# Créer la base et lancer les migrations
-docker compose exec php bin/console doctrine:database:create
-docker compose exec php bin/console doctrine:migrations:migrate
-
-# Accéder au projet
-https://localhost:8000
 ```
 
-## ✅ Fonctionnalités SaaS
+2. Lancez l'environnement de développement
+```bash
+./docker/scripts/start.sh
+```
 
-### 🧑‍💻 Authentification
+Le script va :
+- Créer un fichier .env.local si nécessaire
+- Démarrer les conteneurs Docker
+- Installer les dépendances
+- Créer la base de données
+- Appliquer les migrations
+- Charger les fixtures (en environnement de développement)
 
-- [x] Connexion / Inscription par email
-- [x] Confirmation d'adresse email
-- [x] Mot de passe oublié
-- [ ] Connexion via Google
-- [ ] Connexion via LinkedIn
-- [ ] Connexion via X
+## 🔑 Comptes de test
 
-### ⚙️ Compte & Préférences
+Deux comptes sont créés automatiquement en environnement de développement :
 
-- [x] Modification des infos utilisateur
-- [x] Mise à jour E-mail utilisateur
-- [ ] Préférences de langue / thème
-- [x] Suppression du compte
+### Administrateur
+- Email : admin@example.com
+- Mot de passe : admin
+- Rôle : ROLE_ADMIN
 
-### 🧾 Abonnement / Stripe
+### Utilisateur standard
+- Email : user@example.com
+- Mot de passe : user123
+- Rôle : ROLE_USER
 
-- [ ] Intégration Stripe Checkout
-- [ ] Plans mensuels / annuels
-- [ ] Portail client (Stripe billing portal)
-- [ ] Webhooks Stripe : création, annulation, renouvellement
-- [ ] Factures téléchargeables
-- [ ] Essai gratuit (trial)
+## 🛠️ Services disponibles
 
-### 📬 Emails
+- Application : http://localhost:8080
+- Adminer (gestion BDD) : http://localhost:8081
+- Mailhog (emails) : http://localhost:8025
+- MySQL : localhost:3306
+- Redis : localhost:6379
 
-- [x] Email de bienvenue
-- [x] Confirmation d’email
-- [ ] Notifications (réinitialisation, abonnement)
+## 📦 Stack technique
 
-### 🧱 Permissions
+- Symfony 7.2+
+- Symfony UX LiveComponent
+- Tailwind CSS + Stimulus
+- Doctrine ORM (MySQL)
+- Docker + Compose
+- Webpack Encore
 
-- [x] `ROLE_USER` & `ROLE_ADMIN`
-- [ ] Gestion d'équipes
+## 🧪 Tests
 
-### 📊 Dashboard
+```bash
+# Tests unitaires
+docker compose exec php bin/phpunit
 
-- [ ] Aperçu des derniers contenus générés
-- [ ] Statistiques d’usage
+# Tests fonctionnels
+docker compose exec php bin/phpunit --testsuite=functional
+```
 
-### 💡 Modules IA
+## 🔄 Scripts utiles
 
-- [x] Génération de posts LinkedIn
-- [x] Historique des posts
-- [x] Favoris
-- [x] Édition de contenu
-- [x] Infinite scroll + modale responsive
+- `./docker/scripts/start.sh` : Démarrer l'environnement
+- `./docker/scripts/stop.sh` : Arrêter l'environnement
+- `./docker/scripts/reset.sh` : Réinitialiser complètement l'environnement
+
+## 📝 Documentation
+
+Pour plus d'informations sur le développement, consultez [DEVBOOK.md](DEVBOOK.md).
