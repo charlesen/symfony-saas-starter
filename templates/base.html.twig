@@ -1,29 +1,25 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="{{ app.request.locale }}" class="{{ app.user ? app.user.preferedTheme == 'system' ? (app.request.cookies.get('system-theme') ?? 'light') : app.user.preferedTheme : 'light' }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta
-		name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		{# Open Graph SEO #}
-		<meta property="og:locale" content="fr_FR"/>
-		<meta property="og:url" content="https://www.postgenius.app"/>
-		<meta
-		property="og:site_name" content="PostGenius"/>
+		<meta property="og:locale" content="{{ app.request.locale }}_{{ app.request.locale|upper }}"/>
+		<meta property="og:url" content="{{ app.request.schemeAndHttpHost }}"/>
+		<meta property="og:site_name" content="SaaS Starter"/>
 
 		{# Favicon - SVG + fallback PNG/iOS/ICO/Manifest #}
 		<link rel="icon" type="image/svg+xml" href="{{ asset('build/images/favicon/favicon.svg') }}"/>
 		<link rel="icon" type="image/png" sizes="96x96" href="{{ asset('build/images/favicon/favicon-96x96.png') }}"/>
 		<link rel="apple-touch-icon" sizes="180x180" href="{{ asset('build/images/favicon/apple-touch-icon.png') }}"/>
 		<link rel="shortcut icon" href="{{ asset('build/images/favicon/favicon.ico') }}"/>
-		<link
-		rel="manifest" href="{{ asset('build/images/favicon/site.webmanifest') }}"/>
+		<link rel="manifest" href="{{ asset('build/images/favicon/site.webmanifest') }}"/>
 
 		{# Page Title #}
 		<title>
-			{% block title %}PostGenius
-			{% endblock %}
+			{% block title %}SaaS Starter{% endblock %}
 		</title>
 
 		{# Encore Assets (CSS + JS) #}
@@ -34,6 +30,20 @@
 		{% block javascripts %}
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
+
+		<script>
+			// Détecter le thème système au chargement
+			if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+				document.cookie = 'system-theme=dark;path=/;';
+			} else {
+				document.cookie = 'system-theme=light;path=/;';
+			}
+
+			// Écouter les changements de préférence système
+			window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+				document.cookie = `system-theme=${e.matches ? 'dark' : 'light'};path=/;`;
+			});
+		</script>
 	</head>
 	<body class="bg-white dark:bg-gray-800 dark:text-white" data-controller="app">
 		<div class="flash">
