@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
-    static targets = ['select', 'html'];
+    static targets = ['select'];
     static values = {
         theme: String,
         updateUrl: String
@@ -59,12 +59,12 @@ export default class extends Controller {
         if (theme === 'system') {
             // Utiliser la préférence système
             const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-            this.htmlTarget.classList.remove('dark', 'light');
-            this.htmlTarget.classList.add(systemTheme);
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(systemTheme);
         } else {
             // Utiliser le thème choisi
-            this.htmlTarget.classList.remove('dark', 'light');
-            this.htmlTarget.classList.add(theme);
+            document.documentElement.classList.remove('dark', 'light');
+            document.documentElement.classList.add(theme);
         }
     }
 }

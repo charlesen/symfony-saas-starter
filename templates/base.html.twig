@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app.request.locale }}" class="{{ app.user ? app.user.preferedTheme == 'system' ? (app.request.cookies.get('system-theme') ?? 'light') : app.user.preferedTheme : 'light' }}">
+<html lang="{{ app.request.locale }}" class="{{ app.user ? app.user.preferedTheme == 'system' ? (app.request.cookies.get('system-theme') ?? 'light') : app.user.preferedTheme : 'light' }}" data-controller="theme" data-theme-update-url-value="{{ app.user ? path('dashboard_theme_update') }}" data-theme-theme-value="{{ app.user ? app.user.preferedTheme }}">
 	<head>
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">

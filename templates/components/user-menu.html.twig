@@ -1,25 +1,17 @@
-<div class="ms-3 relative" data-controller="user-menu theme" data-theme-update-url-value="{{ path('dashboard_theme_update') }}" data-theme-theme-value="{{ app.user.preferedTheme }}" data-theme-target="html">
+<div class="ms-3 relative" data-controller="user-menu">
 	<div>
 		<button type="button" data-action="click->user-menu#toggle" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
 			<span class="sr-only">{{ 'Open user menu' | trans }}</span>
 			<img class="w-8 h-8 rounded-full" src="{{ asset(app.user.image|default('build/images/default-user.svg')) }}" alt="user photo">
 		</button>
 	</div>
-	<div data-user-menu-target="menu" class="absolute right-0 z-50 mt-5 w-48 hidden bg-white rounded-sm shadow dark:bg-gray-700">
-		<div class="px-4 py-3" role="none">
+	<div data-user-menu-target="menu" class="absolute right-0 z-50 mt-2 w-48 hidden bg-white rounded-lg shadow-lg dark:bg-gray-700">
+		<div class="px-4 py-3 border-b border-gray-200 dark:border-gray-600" role="none">
 			<p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
 				{{ app.user.fullName ?? app.user.userIdentifier }}
 			</p>
-			<div class="mt-2">
-				<label for="theme" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'Theme' | trans }}</label>
-				<select id="theme" name="theme" data-theme-target="select" data-action="change->theme#change" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md dark:bg-gray-600 dark:border-gray-500 dark:text-white">
-					<option value="system" {{ app.user.preferedTheme == 'system' ? 'selected' : '' }}>{{ 'System' | trans }}</option>
-					<option value="light" {{ app.user.preferedTheme == 'light' ? 'selected' : '' }}>{{ 'Light' | trans }}</option>
-					<option value="dark" {{ app.user.preferedTheme == 'dark' ? 'selected' : '' }}>{{ 'Dark' | trans }}</option>
-				</select>
-			</div>
 		</div>
-		<ul class="py-1" role="none">
+		<ul class="py-2" role="none">
 			<li>
 				<a href="{{ path('dashboard_index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white" role="menuitem">{{ 'Dashboard' | trans }}</a>
 			</li>
