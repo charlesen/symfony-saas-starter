@@ -47,11 +47,10 @@
 			<div class="flex items-center justify-between">
 				<label for="theme" class="block text-sm font-medium text-gray-700 dark:text-gray-300">{{ 'Theme' | trans }}</label>
 				<select id="theme" name="theme" data-controller="theme" data-theme-update-url-value="{{ path('dashboard_theme_update') }}" data-theme-theme-value="{{ app.user.preferedTheme }}" data-action="change->theme#change" class="w-28 pl-3 pr-8 py-1.5 text-sm text-gray-900 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 appearance-none bg-no-repeat bg-[length:16px_16px] bg-[right_0.5rem_center] bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22%236b7280%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M10%203a.75.75%200%2001.55.24l3.25%203.5a.75.75%200%2111-1.1%201.02L10%204.852%207.3%207.76a.75.75%200%2001-1.1-1.02l3.25-3.5A.75.75%200%200110%203zm-3.76%209.2a.75.75%200%20011.06.04l2.7%202.908%202.7-2.908a.75.75%200%20111.1%201.02l-3.25%203.5a.75.75%200%2001-1.1%200l-3.25-3.5a.75.75%200%2001.04-1.06z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2020%2020%22%20fill%3D%22%23d1d5db%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20d%3D%22M10%203a.75.75%200%2001.55.24l3.25%203.5a.75.75%200%2111-1.1%201.02L10%204.852%207.3%207.76a.75.75%200%2001-1.1-1.02l3.25-3.5A.75.75%200%200110%203zm-3.76%209.2a.75.75%200%20011.06.04l2.7%202.908%202.7-2.908a.75.75%200%20111.1%201.02l-3.25%203.5a.75.75%200%2001-1.1%200l-3.25-3.5a.75.75%200%2001.04-1.06z%22%20clip-rule%3D%22evenodd%22%2F%3E%3C%2Fsvg%3E')]">
-					<option value="system" {{ app.user.preferedTheme == 'system' ? 'selected' : '' }}>{{ 'System' | trans }}</option>
-					<option value="light" {{ app.user.preferedTheme == 'light' ? 'selected' : '' }}>{{ 'Light' | trans }}</option>
-					<option value="dark" {{ app.user.preferedTheme == 'dark' ? 'selected' : '' }}>{{ 'Dark' | trans }}</option>
-				</select>
-			</div>
+				<option value="system" {{ app.user.preferedTheme == 'system' ? 'selected' : '' }}>🖥️ {{ 'System' | trans }}</option>
+				<option value="light" {{ app.user.preferedTheme == 'light' ? 'selected' : '' }}>☀️ {{ 'Light' | trans }}</option>
+				<option value="dark" {{ app.user.preferedTheme == 'dark' ? 'selected' : '' }}>🌙 {{ 'Dark' | trans }}</option>
+			</select>
 		</div>
 	</div>
 </aside>

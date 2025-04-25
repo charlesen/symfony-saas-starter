@@ -17,7 +17,8 @@ final class ThemeController extends AbstractController
     #[Route('/update', name: 'update', methods: ['POST'])]
     public function update(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
-        $theme = $request->request->get('theme', 'system');
+        $data = json_decode($request->getContent(), true);
+        $theme = $data['theme'] ?? 'system';
         
         if (!in_array($theme, ['system', 'dark', 'light'])) {
             return new JsonResponse(['error' => 'Invalid theme'], Response::HTTP_BAD_REQUEST);
