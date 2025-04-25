@@ -1,11 +1,11 @@
-<div class="ms-3 relative" data-controller="user-menu">
+<div class="ms-3 relative">
 	<div>
-		<button type="button" data-action="click->user-menu#toggle" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-dropdown-toggle="dropdown-user">
+		<button type="button" class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" aria-expanded="false" data-collapse-toggle="dropdown-user">
 			<span class="sr-only">{{ 'Open user menu' | trans }}</span>
 			<img class="w-8 h-8 rounded-full" src="{{ asset(app.user.image|default('build/images/default-user.svg')) }}" alt="user photo">
 		</button>
 	</div>
-	<div data-user-menu-target="menu" class="absolute right-0 z-50 mt-2 w-48 hidden bg-white rounded-lg shadow-lg dark:bg-gray-700">
+	<div id="dropdown-user" class="absolute right-0 z-50 mt-2 w-48 hidden bg-white rounded-lg shadow-lg dark:bg-gray-700">
 		<div class="px-4 py-3 border-b border-gray-200 dark:border-gray-600" role="none">
 			<p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
 				{{ app.user.fullName ?? app.user.userIdentifier }}
