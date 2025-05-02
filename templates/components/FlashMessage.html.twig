@@ -1,5 +1,5 @@
 <div id="live-flash-container" class="fixed top-0 left-1/2 -translate-x-1/2 z-[9999] w-full flex flex-col items-center pointer-events-none" style="margin-top: 1.5rem;">
-    {% for type, messages in this.flashes %}
+    {% for type, messages in app.flashes %}
         {% if messages is not empty %}
             {% for message in messages %}
                 <div data-controller="auto-dismiss" class="flex items-center w-full max-w-xs p-4 mb-4 text-gray-900 bg-white rounded-lg shadow-lg pointer-events-auto animate-fade-in {{

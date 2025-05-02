@@ -9,11 +9,10 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
@@ -37,8 +36,7 @@ final class UserProfile extends AbstractController
     public function __construct(
         private EntityManagerInterface $em,
         private MediaManager $mediaManager,
-        private RequestStack $requestStack,
-        private ValidatorInterface $validator
+        private RequestStack $requestStack
     ) {}
 
     protected function instantiateForm(): FormInterface
@@ -48,13 +46,9 @@ final class UserProfile extends AbstractController
     }
 
     #[LiveAction]
-    public function save(Request $request): void
+    public function save(Request $request): Response
     {
         $this->submitForm();
-
-        if (!$this->form->isValid()) {
-            return;
-        }
 
         // Récupération manuelle du fichier uploadé
         $uploadedFile = $request->files->get('user_profile')['imageFilename'] ?? null;
@@ -73,10 +67,12 @@ final class UserProfile extends AbstractController
 
         $this->em->flush();
         $this->addFlash('success', 'Profile updated successfully');
+
+        return $this->redirectToRoute('dashboard_profile', ['_locale' => $this->initialFormData->getLang()]);
     }
 
     #[LiveAction]
-    public function deleteAccount(): RedirectResponse
+    public function deleteAccount(): Response
     {
         $user = $this->initialFormData;
 
@@ -85,6 +81,6 @@ final class UserProfile extends AbstractController
 
         $this->addFlash('success', 'Your account has been deleted');
 
-        return $this->redirectToRoute('logout'); // ou page de logout
+        return $this->redirectToRoute('logout', ['_locale' => $this->initialFormData->getLang()]);
     }
 }
