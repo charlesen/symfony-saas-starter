@@ -5,8 +5,10 @@ namespace App\Component;
 use App\Entity\User;
 use App\Form\UserProfileType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -17,7 +19,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use App\Service\MediaManager;
 
 #[AsLiveComponent('UserProfileLive')]
-class UserProfileComponent
+class UserProfileComponent extends AbstractController
 {
     use DefaultActionTrait;
     use ComponentToolsTrait;
@@ -41,7 +43,7 @@ class UserProfileComponent
     }
 
     #[LiveAction]
-    public function save(): void
+    public function save()
     {
         $request = $this->requestStack->getCurrentRequest();
         $form = $this->formFactory->create(UserProfileType::class, $this->user);
@@ -49,7 +51,7 @@ class UserProfileComponent
         if ($form->isSubmitted() && $form->isValid()) {
             // Gestion upload image via MediaManager (compatible LiveComponent)
             $uploadedFile = $request->files->get('user_profile')['imageFilename'] ?? null;
-
+            
             if ($uploadedFile instanceof UploadedFile) {
                 $filename = $this->mediaManager->upload($uploadedFile, 'user', [
                     'maxWidth' => 500,
@@ -65,11 +67,16 @@ class UserProfileComponent
             $this->em->persist($this->user);
             $this->em->flush();
             $this->addFlash('success', 'Profile updated successfully.');
-            if ($this->user->getLang() !== $request->getLocale()) {
-                $this->dispatchBrowserEvent('profile:lang-changed', [
-                    'locale' => $this->user->getLang()
-                ]);
-            }
+            // if ($this->user->getLang() !== $request->getLocale()) {
+            //     $this->dispatchBrowserEvent('profile:lang-changed', [
+            //         'locale' => $this->user->getLang()
+            //     ]);
+            // }
+
+            return $this->redirectToRoute(
+                'dashboard_profile_index',
+                ['_locale' => $this->user->getLang()]
+            );
         }
         $this->form = $form;
     }
