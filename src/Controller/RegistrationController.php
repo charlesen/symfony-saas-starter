@@ -52,7 +52,7 @@ class RegistrationController extends AbstractController
                 'verify_email',
                 $user,
                 (new TemplatedEmail())
-                    ->from(new Address('no-reply@pg.edounze.com', 'PostGenius'))
+                    ->from(new Address('no-reply@pg.edounze.com', 'Symfony Saas Starter'))
                     ->to((string) $user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')

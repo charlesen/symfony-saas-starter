@@ -1,9 +1,10 @@
 <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg" fill="none">
   <rect width="200" height="60" rx="12" fill="#1E293B"/>
-  <text x="20" y="37" font-family="Segoe UI, sans-serif" font-size="24" fill="#ffffff">
-    Post
-    <tspan font-weight="bold" fill="#60A5FA">Genius</tspan>
+  <text x="10" y="37" font-family="Segoe UI, sans-serif" font-size="24" fill="#ffffff">
+    Symfony
+    <tspan font-weight="bold" fill="#60A5FA">Saas</tspan>
   </text>
   <circle cx="170" cy="30" r="6" fill="#60A5FA" />
-  <circle cx="184" cy="30" r="3" fill="#3B82F6" />
+  <circle cx="180" cy="30" r="4" fill="#70B5FA" />
+  <circle cx="187" cy="30" r="3" fill="#3B82F6" />
 </svg>
